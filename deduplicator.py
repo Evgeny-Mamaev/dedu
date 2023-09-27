@@ -62,7 +62,7 @@ def run(strategy: str):
     single snapshot as the business requirement doesn't suggest any batch-mode cases, the latter is introduced here for
     the sake of completeness).
 
-    :param strategy: this implies that the strategy are supplied as the command line argument.
+    :param strategy: this implies that the strategy is supplied as the command line argument.
     :return: it doesn't return anything as all it does is produces side effects such as printing, and changes its state.
     """
     remove_merges_file()
@@ -300,7 +300,7 @@ def deduplicate(json_data: dict[str, dict], indices: dict[str, RedisDict], snaps
     of parameters (hands with ribbons of the same colour) while possible merges exist. It stops when all the
     possibilities have been utilized.
 
-    The algorithm has a O(exp(n)) time and O(exp(n)) space complexity. This bound doesn't introduce any meaningfulness
+    The algorithm has an O(n ^ 2) time and O(n ^ 2) space complexity. This bound doesn't introduce any meaningfulness
     as the practicality of the algorithm takes place only for the sparsely matching data. It perfectly reflects the real
     data profile. Note that the combinatorial explosion exceeds any human-comparable amount of time when the formula
     a ^ b (power) approaches 10 ^ 15 = 10 ^ 10 * 100000 = 100000 secs * 10 GHz = 1 day * 10 GHz for the modern CPU, not
@@ -312,8 +312,8 @@ def deduplicate(json_data: dict[str, dict], indices: dict[str, RedisDict], snaps
     of data records becomes a statistical data structure (holding properties of statistical nature).
 
     The real production data holds such characteristics, skipping mathematical reasoning and considering its sparseness,
-    that only 6% of entities are being merged. It claims the time complexity of θ(n ^ 2). The lower bound is trivially
-    o(n). The mathematical proof for the claimed average time complexity is to be presented.
+    that only 6% of entities are being merged. It claims the time complexity of θ(n * log ^ 2 (n)). The lower bound is
+    trivially o(n). The mathematical proof for the claimed average time complexity is to be presented.
 
     In order to provide the user with the confidence in data consistency, each round and approach of the algorithm is
     checked against the equality of the sum of merges have been done and the number of masters left in the indices to
@@ -400,7 +400,7 @@ def deduplicate(json_data: dict[str, dict], indices: dict[str, RedisDict], snaps
     else:
         print(colored('ERROR!', 'white', 'on_red', attrs=['bold']))
     return indices, len(master_records_set) + total_merge_counter, len(entities_in_indices), entities_in_indices, \
-           total_merge_counter
+        total_merge_counter
 
 
 def count_entities(indices: dict[str, RedisDict], entities_set: set[str], snapshots_dict: RedisDict[str, dict]):
@@ -497,7 +497,7 @@ def build_indices(json_data: dict[str, dict], indices: dict[str, RedisDict], sna
     return indices, entities_in_indices, skipped_entities
 
 
-def iterate_over_indices(indices: dict[str, RedisDict], snapshots_dict: RedisDict[str, dict], merges: dict[str, int], 
+def iterate_over_indices(indices: dict[str, RedisDict], snapshots_dict: RedisDict[str, dict], merges: dict[str, int],
                          this_merges: dict[str, int]):
     """
     This method iterates over all the indices and finds matching entities according to the corresponding rule. These
