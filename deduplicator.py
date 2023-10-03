@@ -300,7 +300,7 @@ def deduplicate(json_data: dict[str, dict], indices: dict[str, RedisDict], snaps
     of parameters (hands with ribbons of the same colour) while possible merges exist. It stops when all the
     possibilities have been utilized.
 
-    The algorithm has an O(n ^ 2) time and O(n ^ 2) space complexity. This bound doesn't introduce any meaningfulness
+    The algorithm has an O(n * log ^ m (n)) time and O(n ^ 2) space complexity. This bound doesn't introduce any meaningfulness
     as the practicality of the algorithm takes place only for the sparsely matching data. It perfectly reflects the real
     data profile. Note that the combinatorial explosion exceeds any human-comparable amount of time when the formula
     a ^ b (power) approaches 10 ^ 15 = 10 ^ 10 * 100000 = 100000 secs * 10 GHz = 1 day * 10 GHz for the modern CPU, not
